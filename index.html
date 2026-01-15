@@ -1,82 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Personalizados – Camisetas e Canecas</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Personalizados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <header>
-    <h1>Personalizados</h1>
-    <p>Camisetas e Canecas</p>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <!-- LOGO PLACEHOLDER (depois você troca) -->
+      <div class="brand">
+        <div class="brand__logo">
+          <!-- Se quiser usar imagem: coloque assets/logo.png e descomente a linha de baixo -->
+          <!-- <img id="brandLogo" src="assets/logo.png" alt="Logo" /> -->
+          <span id="brandInitials">LOGO</span>
+        </div>
+        <div class="brand__text">
+          <strong id="brandName">Sua Marca</strong>
+          <small id="brandTag">Camisetas • Canecas</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar__right">
+      <button id="btnExport" class="btn btn--primary" type="button">Exportar PNG</button>
+      <a id="downloadLink" class="btn btn--ghost" download="mockup.png" style="display:none;">Baixar</a>
+    </div>
   </header>
 
-  <main>
+  <main class="wrap">
 
-    <!-- CANVAS -->
-    <canvas id="canvas" width="900" height="900"></canvas>
-
-    <!-- STATUS -->
-    <p id="statusMsg"></p>
-
-    <!-- CONTROLES -->
-    <section class="controls">
-
-      <!-- PRODUTO -->
-      <div class="group">
-        <button class="segmented__btn" data-product="tshirt">Camiseta</button>
-        <button class="segmented__btn" data-product="mug">Caneca</button>
-      </div>
-
-      <!-- COR -->
-      <div class="group">
-        <button class="segmented__btn" data-color="white">Branco</button>
-        <button class="segmented__btn" data-color="black">Preto</button>
-      </div>
-
-      <!-- UPLOAD -->
-      <div id="dropzone" class="dropzone" tabindex="0">
-        <input id="fileInput" type="file" accept="image/*">
-        <p>Arraste sua arte ou clique aqui</p>
-      </div>
-
-      <!-- AJUSTES -->
-      <div class="group">
-        <label>Escala</label>
-        <input id="scale" type="range" min="0.2" max="2.5" step="0.01" value="1">
-
-        <label>X</label>
-        <input id="offsetX" type="range" min="-250" max="250" value="0">
-
-        <label>Y</label>
-        <input id="offsetY" type="range" min="-250" max="250" value="0">
-
-        <label>Rotação</label>
-        <input id="rotate" type="range" min="-30" max="30" step="0.5" value="0">
-      </div>
-
-      <!-- AÇÕES -->
-      <div class="group">
-        <button id="btnCenter">Centralizar</button>
-        <button id="btnClearArt">Remover arte</button>
-        <button id="btnReset">Resetar</button>
-        <button id="btnExport">Exportar PNG</button>
-        <a id="downloadLink" download style="display:none"></a>
-      </div>
-
+    <!-- Área preparada para GIFs (você só troca o src) -->
+    <section class="gifs">
+      <!-- Exemplo: <img src="assets/gif1.gif" class="gif" alt="gif 1" /> -->
+      <img id="gifSlot1" class="gif" alt="GIF 1" style="display:none;" />
+      <img id="gifSlot2" class="gif" alt="GIF 2" style="display:none;" />
+      <!-- Quando você mandar os gifs, eu te falo exatamente qual src colocar e onde ativar -->
     </section>
 
+    <!-- Studio -->
+    <section class="studio">
+
+      <!-- Preview -->
+      <div class="preview card">
+        <div class="preview__head">
+          <div>
+            <strong>Prévia</strong>
+            <div class="muted">Mockup real + impressão</div>
+          </div>
+          <div id="statusMsg" class="status">Pronto</div>
+        </div>
+
+        <div class="preview__canvas">
+          <canvas id="canvas" width="900" height="900"></canvas>
+        </div>
+
+        <div class="preview__foot">
+          <div class="muted">
+            Dica: PNG transparente fica melhor.
+          </div>
+          <div class="muted">
+            © <span id="year"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <aside class="controls card">
+        <h2 class="controls__title">Configurar</h2>
+
+        <!-- Produto -->
+        <div class="group">
+          <label class="label">Produto</label>
+          <div class="segmented">
+            <button class="segmented__btn is-active" data-product="tshirt" type="button">Camiseta</button>
+            <button class="segmented__btn" data-product="mug" type="button">Caneca</button>
+          </div>
+        </div>
+
+        <!-- Frente/Verso (camiseta) -->
+        <div class="group" id="sideGroup">
+          <label class="label">Lado</label>
+          <div class="segmented">
+            <button class="segmented__btn is-active" data-side="front" type="button">Frente</button>
+            <button class="segmented__btn" data-side="back" type="button">Verso</button>
+          </div>
+          <div class="muted small">Na caneca, isso fica desativado.</div>
+        </div>
+
+        <!-- Upload -->
+        <div class="group">
+          <label class="label">Sua arte</label>
+          <div id="dropzone" class="dropzone" tabindex="0">
+            <input id="fileInput" type="file" accept="image/*" />
+            <div class="dropzone__text">
+              <strong>Arraste e solte</strong> ou clique
+              <small>PNG/JPG</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ajustes -->
+        <div class="group">
+          <label class="label">Tamanho</label>
+          <input id="scale" type="range" min="0.2" max="2.5" step="0.01" value="1" />
+        </div>
+
+        <div class="row">
+          <div class="group">
+            <label class="label">Mover X</label>
+            <input id="offsetX" type="range" min="-250" max="250" step="1" value="0" />
+          </div>
+          <div class="group">
+            <label class="label">Mover Y</label>
+            <input id="offsetY" type="range" min="-250" max="250" step="1" value="0" />
+          </div>
+        </div>
+
+        <div class="group">
+          <label class="label">Rotação</label>
+          <input id="rotate" type="range" min="-30" max="30" step="0.5" value="0" />
+        </div>
+
+        <!-- Ações -->
+        <div class="actions">
+          <button id="btnCenter" class="btn btn--ghost" type="button">Centralizar</button>
+          <button id="btnClearArt" class="btn btn--ghost" type="button">Remover</button>
+          <button id="btnReset" class="btn btn--ghost" type="button">Reset</button>
+        </div>
+
+        <hr class="hr" />
+
+        <div class="muted small">
+          Portas abertas: depois a gente adiciona mousepad, garrafa, etc. só criando mais “produtos”.
+        </div>
+      </aside>
+
+    </section>
   </main>
 
-  <footer>
-    <small>© <span id="year"></span></small>
-  </footer>
-
-  <!-- JS -->
   <script src="app.js"></script>
 </body>
 </html>
